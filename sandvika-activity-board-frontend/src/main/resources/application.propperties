@@ -1,0 +1,2 @@
+spring.data.mongodb.database=sandvika-strava
+spring.data.mongodb.uri=mongodb://sandvika-strava:rXfthktSnnb5tstjuzHrPDzfkImIK27mQ3RvyXqEmkVFoD159fwqXZxY4zrTJaLMiAtloU06a5n1IlcIvA6ZCA==@sandvika-strava.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@sandvika-strava@
