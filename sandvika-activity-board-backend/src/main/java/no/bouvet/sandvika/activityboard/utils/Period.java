@@ -5,6 +5,16 @@ import java.util.Date;
 public class Period {
     private Date start;
     private Date end;
+    private int periodNumber;
+    private int year;
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 
     public Date getStart() {
         return start;
@@ -20,6 +30,14 @@ public class Period {
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public int getPeriodNumber() {
+        return periodNumber;
+    }
+
+    public void setPeriodNumber(int periodNumber) {
+        this.periodNumber = periodNumber;
     }
 
     public int getDaysSinceStart() {

@@ -11,8 +11,8 @@ import java.util.Map;
         "id",
         "username",
         "resource_state",
-        "firstname",
-        "lastname",
+        "firstName",
+        "lastName",
         "city",
         "state",
         "country",
@@ -35,9 +35,9 @@ public class StravaAthlete {
     private String username;
     @JsonProperty("resource_state")
     private Integer resourceState;
-    @JsonProperty("firstname")
+    @JsonProperty("firstName")
     private String firstname;
-    @JsonProperty("lastname")
+    @JsonProperty("lastName")
     private String lastname;
     @JsonProperty("city")
     private String city;
@@ -98,22 +98,22 @@ public class StravaAthlete {
         this.resourceState = resourceState;
     }
 
-    @JsonProperty("firstname")
+    @JsonProperty("firstName")
     public String getFirstname() {
         return firstname;
     }
 
-    @JsonProperty("firstname")
+    @JsonProperty("firstName")
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    @JsonProperty("lastname")
+    @JsonProperty("lastName")
     public String getLastname() {
         return lastname;
     }
 
-    @JsonProperty("lastname")
+    @JsonProperty("lastName")
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }

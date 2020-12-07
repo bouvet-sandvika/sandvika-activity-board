@@ -28,7 +28,6 @@ import { LatestActivities } from './components/latest.activities.component';
 import { TopActivities } from './components/top.activities.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthCodeService } from './service/auth-code.service';
 import { RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { PhotoCarouselComponent } from './photo-carousel/photo-carousel.component';
@@ -67,7 +66,7 @@ import { SortService } from './components/sort.service';
     NgbModule.forRoot(),
     RouterModule.forRoot([{ path: '', component: AppComponent }])
   ],
-  providers: [AppRestService, AuthCodeService, CookieService, SortService],
+  providers: [AppRestService, CookieService, SortService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

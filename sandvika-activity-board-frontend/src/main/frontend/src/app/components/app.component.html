@@ -1,26 +1,28 @@
-<div class="container">
-    <div class="bouvet-brand"><img src="../../assets/logo.svg" *ngIf="isLoggedIn && athlete.clubs && athlete.clubs.length > 0 && defaultClub"></div>
+<div class="container" *ngIf="athlete">
+  <div class="bouvet-brand"><img src="../../assets/logo.svg"
+                                 *ngIf="athlete.clubs && athlete.clubs.length > 0 && defaultClub"></div>
 
-    <div class="flex-wrapper" *ngIf="isLoggedIn && athlete.clubs && defaultClub">
-        <ngbd-tabset-pills [chosenClub]="defaultClub" (chooseClub)="resetClubEmitter($event)"></ngbd-tabset-pills>
+  <div class="flex-wrapper" *ngIf="athlete.clubs && defaultClub">
+    <ngbd-tabset-pills [chosenClub]="defaultClub" (chooseClub)="resetClubEmitter($event)"></ngbd-tabset-pills>
+  </div>
+  <div class="strava-brand"><img src="../../assets/api_logo_pwrdBy_strava_horiz_light.svg"
+                                 *ngIf="athlete.clubs && defaultClub"></div>
+
+  <ng-template ngbModalContainer></ng-template>
+
+  <div class="log-in m-auto" *ngIf="!athlete.clubs || !defaultClub">
+    <div class="w-100 mb-4"><img src="../../assets/logo.svg"></div>
+
+    <h4 *ngIf="(!athlete.clubs || athlete.clubs.length === 0)">Du er ikke medlem av en klubb, kontakt leaderboard
+      ansvarlig for din klubb.</h4>
+
+    <div *ngIf="athlete.clubs && athlete.clubs.length > 0 && !defaultClub">
+      <h4>Dine klubber</h4>
+      <div class="btn-group-vertical w-100">
+        <button *ngFor="let club of athlete.clubs" class="btn btn-outline-strava btn-lg btn-block"
+                (click)="registerClub(club)">{{club}}</button>
+      </div>
     </div>
-    <div class="strava-brand"><img src="../../assets/api_logo_pwrdBy_strava_horiz_light.svg" *ngIf="isLoggedIn && athlete.clubs && defaultClub"></div>
-
-    <ng-template ngbModalContainer></ng-template>
-
-    <div class="log-in m-auto" *ngIf="!isLoggedIn || !athlete.clubs || !defaultClub">
-        <div class="w-100 mb-4"><img src="../../assets/logo.svg"></div>
-
-        <a *ngIf="!isLoggedIn" class="btn btn-outline-strava btn-lg btn-block" href="https://www.strava.com/oauth/authorize?client_id=3034&redirect_uri={{redirectUrl}}&response_type=code">Logg inn med Strava</a>
-
-        <h4 *ngIf="isLoggedIn && (!athlete.clubs || athlete.clubs.length === 0)">Du er ikke medlem av en klubb, kontakt leaderboard ansvarlig for din klubb.</h4>
-
-        <div *ngIf="isLoggedIn && athlete.clubs && athlete.clubs.length > 0 && !defaultClub">
-            <h4>Dine klubber</h4>
-            <div class="btn-group-vertical w-100">
-                <button *ngFor="let club of athlete.clubs" class="btn btn-outline-strava btn-lg btn-block" (click)="registerClub(club)">{{club}}</button>
-            </div>
-        </div>
-        <div class="w-50 float-right mt-5"><img src="../../assets/api_logo_pwrdBy_strava_horiz_light.svg"></div>
-    </div>
+    <div class="w-50 float-right mt-5"><img src="../../assets/api_logo_pwrdBy_strava_horiz_light.svg"></div>
+  </div>
 </div>

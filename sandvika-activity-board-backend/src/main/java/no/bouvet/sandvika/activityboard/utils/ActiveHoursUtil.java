@@ -2,6 +2,8 @@ package no.bouvet.sandvika.activityboard.utils;
 
 import no.bouvet.sandvika.activityboard.domain.Activity;
 import no.bouvet.sandvika.activityboard.domain.Athlete;
+import no.bouvet.sandvika.activityboard.domain.PeriodStats;
+import no.bouvet.sandvika.activityboard.domain.PeriodType;
 import no.bouvet.sandvika.activityboard.repository.ActivityRepository;
 import org.springframework.stereotype.Component;
 

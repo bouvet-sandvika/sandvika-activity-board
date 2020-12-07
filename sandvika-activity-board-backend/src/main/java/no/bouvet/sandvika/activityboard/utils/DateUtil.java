@@ -21,6 +21,11 @@ public class DateUtil {
         return (int) Math.round((new Date().getTime() - date.getTime()) / (double) 86400000);
     }
 
+    public static int getDayOfCurrentYear() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.DAY_OF_YEAR);
+    }
+
     public static Date firstDayOfCurrentWeek() {
         Calendar cal = Calendar.getInstance();
         clearCalendar(cal);
@@ -74,6 +79,13 @@ public class DateUtil {
         return cal.getTime();
     }
 
+    public static Date addDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days);
+        return cal.getTime();
+    }
+
     public static Date getDateFromLocalDateTime(LocalDateTime input) {
         Instant instant = input.toInstant(ZoneOffset.ofHours(0));
         return Date.from(instant);
@@ -113,6 +125,8 @@ public class DateUtil {
         Period period = new Period();
         period.setStart(firstDayOfWeek(week, year));
         period.setEnd(setEndOfDay(lastDayOfWeek(week, year)));
+        period.setPeriodNumber(week);
+        period.setYear(year);
         return period;
     }
 
@@ -137,6 +151,8 @@ public class DateUtil {
         Period period = new Period();
         period.setStart(firstDayOfMonth(month - 1, year));
         period.setEnd(setEndOfDay(lastDayOfMonth(month - 1, year)));
+        period.setPeriodNumber(month);
+        period.setYear(year);
         return period;
     }
 
@@ -150,35 +166,54 @@ public class DateUtil {
         return cal.getTime();
     }
 
-    public static Period getCurrentPeriod(PeriodType periodType, Date competitionStartDate) {
+    public static Period getCurrentPeriod(PeriodType periodType, Date competitionStartDate, Date competitionEndDate) {
         switch (periodType) {
             case MONTH:
                 return getPeriodForCurrentMonth();
             case WEEK:
                 return getPeriodForCurrentWeek();
             case COMPETITION:
-                return getPeriodForCompetition(competitionStartDate);
+                return getPeriodForCompetition(competitionStartDate, competitionEndDate);
             default:
                 return null;
         }
     }
 
-    private static Period getPeriodForCompetition(Date competitionStartDate) {
-        return getPeriodBetweenDates(competitionStartDate, new Date());
+    private static Period getPeriodForCompetition(Date competitionStartDate, Date competitionEndDate) {
+        return getPeriodBetweenDates(competitionStartDate, competitionEndDate);
     }
 
     private static Period getPeriodForCurrentWeek() {
         Period period = new Period();
         period.setStart(firstDayOfCurrentWeek());
         period.setEnd(setEndOfDay(lastDayOfCurrentWeek()));
+        period.setPeriodNumber(currentWeekNumber());
+        period.setYear(currentYear());
         return period;
+    }
+
+    private static int currentYear() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.YEAR);
     }
 
     private static Period getPeriodForCurrentMonth() {
         Period period = new Period();
         period.setStart(firstDayOfCurrentMonth());
         period.setEnd(setEndOfDay(lastDayOfCurrentMonth()));
+        period.setPeriodNumber(currentMonthNumber());
+        period.setYear(currentYear());
         return period;
+    }
+
+    private static int currentMonthNumber() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.MONTH) + 1;
+    }
+
+    private static int currentWeekNumber() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.WEEK_OF_YEAR);
     }
 
     private static Date lastDayOfCurrentMonth() {
@@ -231,5 +266,11 @@ public class DateUtil {
     public static long getEpochDaysAgo(int daysAgo) {
         Date date = getDateDaysAgo(daysAgo);
         return date.toInstant().getEpochSecond();
+    }
+
+    public static int getMonthWeeksBack(int weeksBack) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.WEEK_OF_YEAR, -weeksBack);
+        return cal.get(Calendar.MONTH) + 1;
     }
 }

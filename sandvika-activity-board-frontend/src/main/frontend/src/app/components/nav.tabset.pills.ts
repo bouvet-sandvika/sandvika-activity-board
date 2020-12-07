@@ -8,7 +8,6 @@ import { DateUtilsServiceService } from '../service/date-utils-service.service';
 import { Statistics } from '../domain/Statistics';
 import { Activity } from '../domain/activity';
 import { ActivityType, ACTIVITY_TYPES } from '../domain/ActivityType';
-import { AuthCodeService } from '../service/auth-code.service';
 import { CookieService } from 'ngx-cookie-service';
 import { SortService } from './sort.service';
 
@@ -43,12 +42,9 @@ export class NgbdTabsetPills implements OnInit {
 
   constructor(
     private appRestService: AppRestService,
-    private authCodeService: AuthCodeService,
     private cookie: CookieService,
     private sortService: SortService
   ) {
-    this.loggedInAthlete = this.authCodeService.athlete;
-
     this.pageWeek = DateUtilsServiceService.getWeekNumber(new Date());
     this.pageMonth = new Date().getMonth() + 1;
 
@@ -60,8 +56,6 @@ export class NgbdTabsetPills implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loggedInAthlete = this.authCodeService.athlete;
-
     this.appRestService.getAllStats(this.pillTab[0], this.chosenClub).subscribe(
         statistics => this.processStatsResult(statistics),
         error => (this.errorMessage = <any>error)

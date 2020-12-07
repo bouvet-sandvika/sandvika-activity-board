@@ -63,7 +63,7 @@ public class HandicapCalculator {
     }
 
     public double getHandicapForActivity(Activity activity) {
-        Athlete athlete = athleteRepository.findById(activity.getAthleteId());
+        Athlete athlete = athleteRepository.findById(activity.getAthleteId()).orElse(null);
         if (athlete == null || athlete.getHandicapList().isEmpty()) {
             return 1;
         } else {
@@ -81,7 +81,7 @@ public class HandicapCalculator {
                     .filter(h -> h.getTimestamp().before(calendar.getTime()))
                     .collect(Collectors.toList()));
         }
-        athleteRepository.save(athletes);
+        athleteRepository.saveAll(athletes);
     }
 
     private void updateHandicapForAllAthletesForDate(Date date) {
@@ -89,23 +89,19 @@ public class HandicapCalculator {
 
         for (Athlete athlete : athletes) {
             Handicap hc = new Handicap(calculateHandicapForAthleteOnDate(athlete, date), date);
-            log.info("Adding new HC for " + athlete.getLastName() + " " + hc.toString());
             athlete.getHandicapList().add(hc);
         }
-        athleteRepository.save(athletes);
+        athleteRepository.saveAll(athletes);
 
     }
 
     protected double calculateHandicapForAthleteOnDate(Athlete athlete, Date date) {
         double activeHours = activeHoursUtil.getActiveHoursByDaysAndDateAndAthlete(30, date, athlete);
-        log.info("*** HC for " + athlete.getLastName() + " on " + date + " ***");
-        log.info("\tActiveHours: " + activeHours);
         return calculateHandicap(activeHours);
     }
 
     private double calculateHandicap(double activeHours) {
         double rawHc = Utils.scaledDouble(20 * Math.pow(activeHours, -1), 3);
-        log.info("\tRawHC: " + rawHc);
         double hc = 0;
 
         if (rawHc > 10 || rawHc == 0) {
@@ -122,7 +118,6 @@ public class HandicapCalculator {
     private void updateHandicapForAthleteForDate(int athleteId, Date dateDaysAgo) {
         Athlete athlete = athleteRepository.findById(athleteId);
         Handicap hc = new Handicap(calculateHandicapForAthleteOnDate(athlete, dateDaysAgo), dateDaysAgo);
-        log.info("Adding new HC for " + athlete.getLastName() + " " + hc.toString());
         athlete.getHandicapList().add(hc);
         athleteRepository.save(athlete);
     }

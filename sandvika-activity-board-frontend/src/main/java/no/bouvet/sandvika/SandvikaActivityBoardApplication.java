@@ -16,8 +16,7 @@ public class SandvikaActivityBoardApplication {
 	}
 
 	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+	public RestTemplate restTemplateService(RestTemplateBuilder builder) {
 		return builder.build();
 	}
-
 }

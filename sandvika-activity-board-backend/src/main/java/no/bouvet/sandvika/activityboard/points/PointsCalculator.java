@@ -1,15 +1,11 @@
 package no.bouvet.sandvika.activityboard.points;
 
-import no.bouvet.sandvika.activityboard.domain.Badge;
-import no.bouvet.sandvika.activityboard.repository.BadgeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import no.bouvet.sandvika.activityboard.domain.Activity;
 import no.bouvet.sandvika.activityboard.domain.ActivityType;
+import no.bouvet.sandvika.activityboard.domain.Badge;
 import no.bouvet.sandvika.activityboard.utils.Utils;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 
 /**

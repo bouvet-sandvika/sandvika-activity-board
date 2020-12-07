@@ -8,10 +8,5 @@ import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "club", path = "club")
 public interface ClubRepository extends MongoRepository<Club, String> {
-    Club findById(String id);
     List<Club> findClubsByMemberIdsContains(Integer athleteId);
-
-
-    void deleteById(String id);
-
 }

@@ -8,6 +8,7 @@ public class Club {
     private String id;
     private List<Integer> memberIds;
     private Date competitionStartDate;
+    private Date competitionEndDate;
     private List<Integer> adminIds;
 
     public String getId() {
@@ -40,6 +41,14 @@ public class Club {
 
     public void setAdminIds(List<Integer> adminIds) {
         this.adminIds = adminIds;
+    }
+
+    public Date getCompetitionEndDate() {
+        return competitionEndDate;
+    }
+
+    public void setCompetitionEndDate(Date competitionEndDate) {
+        this.competitionEndDate = competitionEndDate;
     }
 
     public void addMember(Integer memberId) {

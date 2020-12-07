@@ -43,6 +43,11 @@ public class ActivityController {
         return activityUtils.getActivitiesForPeriodByActivityType(clubName, activityType.toLowerCase(), periodType, periodNumber, year);
     }
 
+    @RequestMapping(value = "/leaderboard/{clubName}/history", method = RequestMethod.GET)
+    public List<AthleteLeaderboardHistroy> getLeaderboardHistory(@PathVariable("clubName") String clubName) {
+        return leaderboardUtils.getLeaderboardHistory(clubName);
+    }
+
     @RequestMapping(value = "/leaderboard/{clubName}/{activityType}/{periodType}", method = RequestMethod.GET)
     public List<LeaderboardEntry> getLeaderboardForCurrentPeriod(@PathVariable("clubName") String clubName,
                                                                  @PathVariable("activityType") String activityType,
@@ -122,7 +127,7 @@ public class ActivityController {
     }
 
     @RequestMapping(value = "/activities/{activityId}/pointcalculation", method = RequestMethod.GET)
-    public PointsCalculation getRecentActivityPhotos(@PathVariable("activityId") int activityId) {
+    public PointsCalculation getPointsCalculationForActivity(@PathVariable("activityId") long activityId) {
         return activityUtils.getPointsCalculationForActivity(activityId);
     }
 }

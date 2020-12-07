@@ -1,7 +1,16 @@
 package no.bouvet.sandvika.activityboard.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import no.bouvet.sandvika.activityboard.points.PointsCalculator;
 
+import java.util.Set;
+
+
+@Getter
+@Setter
+@EqualsAndHashCode
 public class PointsCalculation {
     private int minutes;
     private double elevationGain;
@@ -13,95 +22,8 @@ public class PointsCalculation {
     private double kmCoeffisient;
     private double minCoeffisient;
     private double elevationCoeffisient;
+    private Set<Badge> badges;
     private String calculation;
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public double getElevationGain() {
-        return elevationGain;
-    }
-
-    public void setElevationGain(double elevationGain) {
-        this.elevationGain = elevationGain;
-    }
-
-    public double getKm() {
-        return km;
-    }
-
-    public void setKm(double km) {
-        this.km = km;
-    }
-
-    public int getAchievements() {
-        return achievements;
-    }
-
-    public void setAchievements(int achievements) {
-        this.achievements = achievements;
-    }
-
-    public double getHc() {
-        return hc;
-    }
-
-    public void setHc(double hc) {
-        this.hc = hc;
-    }
-
-    public String getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
-    }
-
-    public long getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(long activityId) {
-        this.activityId = activityId;
-    }
-
-    public double getKmCoeffisient() {
-        return kmCoeffisient;
-    }
-
-    public void setKmCoeffisient(double kmCoeffisient) {
-        this.kmCoeffisient = kmCoeffisient;
-    }
-
-    public double getMinCoeffisient() {
-        return minCoeffisient;
-    }
-
-    public void setMinCoeffisient(double minCoeffisient) {
-        this.minCoeffisient = minCoeffisient;
-    }
-
-    public double getElevationCoeffisient() {
-        return elevationCoeffisient;
-    }
-
-    public void setElevationCoeffisient(double elevationCoeffisient) {
-        this.elevationCoeffisient = elevationCoeffisient;
-    }
-
-    public String getCalculation() {
-        return calculation;
-    }
-
-    public void setCalculation(String calculation) {
-        this.calculation = calculation;
-    }
 
     public void createCalculation() {
         String calc = "Points = (((" +
@@ -111,9 +33,24 @@ public class PointsCalculation {
                 ") + (" +
                 elevationGain + " * " + PointsCalculator.ELEVATIOIN_METER_VALUE + " * " + elevationCoeffisient +
                 ") + " +
+                getPointsFromBadges() + "+" +
                 achievements + ") * " + hc + ") /2" + " = " +
-                (((minutes * minCoeffisient * PointsCalculator.MINUTE_VALUE) + (km * kmCoeffisient * PointsCalculator.KILOMETER_VALUE) + (elevationGain * elevationCoeffisient * PointsCalculator.ELEVATIOIN_METER_VALUE) + achievements) * hc)/2;
+                (((minutes * minCoeffisient * PointsCalculator.MINUTE_VALUE) + (km * kmCoeffisient * PointsCalculator.KILOMETER_VALUE) + (elevationGain * elevationCoeffisient * PointsCalculator.ELEVATIOIN_METER_VALUE) + getPointsFromBadges() + achievements) * hc) / 2;
         calculation = calc;
+    }
+
+    private int getPointsFromBadges() {
+        return this.badges.stream()
+                .mapToInt(b -> b.getPoints())
+                .sum();
+    }
+
+    private String printBadges() {
+        String badgesNameAndPoints = "";
+        for (Badge b : this.badges) {
+            badgesNameAndPoints += b.getName() + ":" + b.getPoints();
+        }
+        return badgesNameAndPoints;
     }
 
     @Override
@@ -129,6 +66,7 @@ public class PointsCalculation {
                 ", kmCoeffisient=" + kmCoeffisient +
                 ", minCoeffisient=" + minCoeffisient +
                 ", elevationCoeffisient=" + elevationCoeffisient +
+                ", badges: [" + printBadges() + "]" +
                 '}';
     }
 

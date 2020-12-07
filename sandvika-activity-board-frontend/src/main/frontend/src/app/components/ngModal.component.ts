@@ -4,7 +4,6 @@ import {Sort} from '@angular/material';
 import {NgbActiveModal, NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {AppRestService} from '../service/app.rest.service';
 import {Activity} from '../domain/activity';
-import {AuthCodeService} from '../service/auth-code.service';
 import {ModalAthlete} from '../domain/athlete';
 import {SortService} from './sort.service';
 import { TabContent } from '../domain/TabContent';
@@ -25,7 +24,7 @@ export class NgbdModalComponent implements OnInit {
     private activities: Activity[];
     private errorMessage: any;
 
-    constructor(private modalService: NgbModal, private appRestService: AppRestService, private auth: AuthCodeService) {}
+    constructor(private modalService: NgbModal, private appRestService: AppRestService) {}
 
     open() {
         const options: NgbModalOptions = {

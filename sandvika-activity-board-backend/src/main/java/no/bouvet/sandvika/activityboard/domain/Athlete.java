@@ -1,84 +1,32 @@
 package no.bouvet.sandvika.activityboard.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import java.time.Instant;
 import java.util.*;
 
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"lastName", "id"})
 public class Athlete {
     @Id
     private int id;
+    private String username;
+    @JsonProperty("lastname")
     private String lastName;
-    private List<Handicap> handicapList;
+    @JsonProperty("firstname")
     private String firstName;
     private String profile;
-    private Map<String, List<Activity>> badges;
     private String token;
-    private List<String> clubs;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Map<String, List<Activity>> getBadges() {
-
-        if (badges == null) {
-            badges = new HashMap<>();
-        }
-        return badges;
-    }
-
-    public void setBadges(Map<String, List<Activity>> badges) {
-        this.badges = badges;
-    }
-
-    public List<Handicap> getHandicapList() {
-        if (this.handicapList == null) {
-            this.handicapList = new ArrayList<>();
-        }
-        handicapList.sort(Comparator.comparing(Handicap::getTimestamp).reversed());
-
-        return handicapList;
-    }
-
-    public void setHandicapList(List<Handicap> handicapList) {
-        this.handicapList = handicapList;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Athlete athlete = (Athlete) o;
-
-        if (lastName != null ? !lastName.equals(athlete.lastName) : athlete.lastName != null) {
-            return false;
-        }
-        return handicapList != null ? handicapList.equals(athlete.handicapList) : athlete.handicapList == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = lastName != null ? lastName.hashCode() : 0;
-        result = 31 * result + (handicapList != null ? handicapList.hashCode() : 0);
-        return result;
-    }
+    private Instant tokenExpires;
+    private String refreshToken;
+    private List<Handicap> handicapList = new ArrayList<>();
+    private List<String> clubs = new ArrayList<>();
+    private Map<String, List<Activity>> badges = new HashMap<>();
 
     public double getHandicapForDate(Date startDateLocal) {
         if (handicapList == null) {
@@ -104,22 +52,6 @@ public class Athlete {
         return handicap.getAsDouble();
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
     public void addBadge(Badge badge, Activity activity) {
         Map<String, List<Activity>> badges = getBadges();
         if (badges.containsKey(badge)) {
@@ -129,38 +61,7 @@ public class Athlete {
         }
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    @Override
-    public String toString() {
-        return "Athlete{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", handicapList=" + handicapList +
-                ", firstName='" + firstName + '\'' +
-                ", profile='" + profile + '\'' +
-                ", badges=" + badges +
-                '}';
-    }
-
     public double getCurrentHandicap() {
         return getHandicapForDate(new Date());
-    }
-
-    public List<String> getClubs() {
-        if (clubs == null) {
-            clubs = new ArrayList<>();
-        }
-        return clubs;
-    }
-
-    public void setClubs(List<String> clubs) {
-        this.clubs = clubs;
     }
 }

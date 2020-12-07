@@ -1,0 +1,62 @@
+server:
+  port: 8005
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
+
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          strava:
+#            clientId: 3034
+#            clientSecret: 506d1d0ed30af56b74a458a26419dd6ead8e910d
+#            clientAuthenticationMethod: POST
+#            authorizationGrantType: authorization_code
+#            scopes: activity:read_all
+#            authorizationUri: https://www.strava.com/oauth/authorize
+#            tokenUri: https://www.strava.com/oauth/token
+#            userInfoUri: https://www.strava.com/api/v3/athlete
+#        provider:
+#          strava:
+#            authorizationUri: https://www.strava.com/oauth/authorize
+#            tokenUri: https://www.strava.com/oauth/token
+#            userInfoAuthenticationMethod: POST
+#            userInfoUri: https://www.strava.com/api/v3/athlete
+#            userNameAttribute: username
+
+
+#security:
+#  oauth2:
+#    sso:
+#      login-path: /login
+#    client:
+#      client-id: 3034
+#      client-secret: 506d1d0ed30af56b74a458a26419dd6ead8e910d
+#      access-token-uri: https://www.strava.com/oauth/token
+#      user-authorization-uri: https://www.strava.com/oauth/authorize
+#      grant-type: authorization_code
+#      scope: activity:read_all
+#      authenticationScheme: query
+#      clientAuthenticationScheme: form
+#    resource:
+#      userInfoUri: https://www.strava.com/api/v3/athlete
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+    #      username: admin
+    #      password: 1o2XZgY1fPbJ
+    #      database: test
+
+    #  server.port=8005
+    #  spring.data.mongodb.uri=mongodb://localhost:27017/test
+    #  #spring.data.mongodb.username=admin
+    #  spring.data.mongodb.username=test
+    #  #spring.data.mongodb.password=1o2XZgY1fPbJ
+    #  spring.data.mongodb.password=test
+
+

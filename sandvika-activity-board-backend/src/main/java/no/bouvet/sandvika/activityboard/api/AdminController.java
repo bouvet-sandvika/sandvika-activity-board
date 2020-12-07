@@ -41,11 +41,10 @@ public class AdminController {
     @ResponseBody
     public UpdateSummary refreshActivities(@PathVariable("pages") int pages) {
         return stravaSlurper.updateActivities(pages, 0);
-
     }
 
     @RequestMapping(value = "/activities/{id}", method = RequestMethod.PUT)
-    public void addActivity(@PathVariable("id") int id, @RequestBody Activity activity) {
+    public void addActivity(@PathVariable("id") long id, @RequestBody Activity activity) {
         activity.setHandicap(handicapCalculator.getHandicapForActivity(activity));
         activity.setPoints(PointsCalculator.getPointsForActivity(activity, activity.getHandicap()));
         activityRepository.save(activity);
@@ -60,7 +59,7 @@ public class AdminController {
     @RequestMapping(value = "/athlete/{id}/activities/load/{pages}", method = RequestMethod.GET)
     @ResponseBody
     public Integer refreshActivitiesForAthlete(@PathVariable("id") int athleteId, @PathVariable("pages") int pages) {
-        if (!athleteRepository.exists(athleteId)) {
+        if (!athleteRepository.existsById(athleteId)) {
             throw new IllegalArgumentException("Athlete does not exist");
         }
         Athlete athlete = athleteRepository.findById(athleteId);
@@ -97,8 +96,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/activities/{id}", method = RequestMethod.DELETE)
-    public void deleteActivity(@PathVariable("id") int id) {
-        activityRepository.delete(id);
+    public void deleteActivity(@PathVariable("id") long id) {
+        activityRepository.deleteById(id);
     }
 
 
@@ -134,7 +133,7 @@ public class AdminController {
         List<Badge> badges = badgeRepository.findAll();
         badges.forEach(badge ->
         {
-            badge.setActivities(null);
+            //badge.setActivities(null);
             badgeRepository.save(badge);
         });
 
