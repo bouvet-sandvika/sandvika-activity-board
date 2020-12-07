@@ -85,7 +85,7 @@ public class AthleteController {
 //    }
 
     @RequestMapping(value = "/athlete", method = RequestMethod.GET)
-    public List<Athlete> getAllAthletes() {
+    public Iterable<Athlete> getAllAthletes() {
         return athleteRepository.findAll();
     }
 
@@ -115,7 +115,7 @@ public class AthleteController {
     }
 
     private List<AthleteStats> getAthleteStats(int weeksBack) {
-        List<Athlete> athletes = athleteRepository.findAll();
+        Iterable<Athlete> athletes = athleteRepository.findAll();
         List<AthleteStats> athleteStats = new ArrayList<>();
         for (Athlete athlete : athletes) {
             athleteStats.add(createAthleteStats(athlete, weeksBack));

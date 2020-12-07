@@ -47,7 +47,7 @@ public class HandicapCalculator {
 
     public void updateActivityHandicap(int days) {
         updateHistoricalHandicapForAllAthletes(days);
-        List<Activity> activities = activityRepository.findAll();
+        Iterable<Activity> activities = activityRepository.findAll();
         for (Activity activity : activities) {
             activity.setHandicap(getHandicapForActivity(activity));
             activity.setPoints(PointsCalculator.getPointsForActivity(activity, activity.getHandicap()));
@@ -72,7 +72,7 @@ public class HandicapCalculator {
     }
 
     private void deleteHandicapsForAllAthlets(int days) {
-        List<Athlete> athletes = athleteRepository.findAll();
+        Iterable<Athlete> athletes = athleteRepository.findAll();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -days);
         for (Athlete athlete : athletes) {
@@ -85,7 +85,7 @@ public class HandicapCalculator {
     }
 
     private void updateHandicapForAllAthletesForDate(Date date) {
-        List<Athlete> athletes = athleteRepository.findAll();
+        Iterable<Athlete> athletes = athleteRepository.findAll();
 
         for (Athlete athlete : athletes) {
             Handicap hc = new Handicap(calculateHandicapForAthleteOnDate(athlete, date), date);

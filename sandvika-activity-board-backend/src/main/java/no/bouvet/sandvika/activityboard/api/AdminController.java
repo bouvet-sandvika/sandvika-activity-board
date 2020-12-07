@@ -112,7 +112,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/badges", method = RequestMethod.GET)
-    public List<Badge> listAllBadges() {
+    public Iterable<Badge> listAllBadges() {
         return badgeRepository.findAll();
     }
 
@@ -130,7 +130,7 @@ public class AdminController {
 
     @RequestMapping(value = "/badges/deleteAllBadgesFromAthletes", method = RequestMethod.DELETE)
     public void deleteAllBadgesFromAthletes() {
-        List<Badge> badges = badgeRepository.findAll();
+        Iterable<Badge> badges = badgeRepository.findAll();
         badges.forEach(badge ->
         {
             //badge.setActivities(null);
