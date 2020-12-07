@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.microsoft.azure.spring.data.cosmosdb.repository.CosmosRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import no.bouvet.sandvika.activityboard.domain.Activity;
 
 @RepositoryRestResource(collectionResourceRel = "activity", path = "activity")
-public interface ActivityRepository extends MongoRepository<Activity, Long>
+public interface ActivityRepository extends CosmosRepository<Activity, Long>
 {
     public List<Activity> findAllByBadgesIsNotNull();
 
