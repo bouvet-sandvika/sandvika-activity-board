@@ -13,19 +13,19 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 @EnableMongoRepositories(basePackages = "no.bouvet.sandvika.activityboard.repository")
 public class AzureCosmosDbConfiguration extends AbstractCosmosConfiguration {
-    @Value("${azure.cosmos.uri}")
+    @Value("${spring.data.mongodb.uri}")
     private String uri;
 
-    @Value("${azure.cosmos.key}")
+    @Value("${spring.data.mongodb.key}")
     private String key;
 
-    @Value("${azure.cosmos.database}")
+    @Value("${spring.data.mongodb.database}")
     private String dbName;
 
-    @Value("${azure.cosmos.secondaryKey}")
+    @Value("${spring.data.mongodb.secondaryKey}")
     private String secondaryKey;
 
-    @Value("${azure.cosmos.queryMetricsEnabled}")
+    @Value("${spring.data.mongodb.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
     private AzureKeyCredential azureKeyCredential;
