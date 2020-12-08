@@ -1,18 +1,15 @@
 package no.bouvet.sandvika.activityboard.repository;
 
-import java.util.Date;
-import java.util.List;
-import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
-
-import com.microsoft.azure.spring.data.cosmosdb.repository.CosmosRepository;
+import no.bouvet.sandvika.activityboard.domain.Activity;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import no.bouvet.sandvika.activityboard.domain.Activity;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
 
 @RepositoryRestResource(collectionResourceRel = "activity", path = "activity")
-public interface ActivityRepository extends CosmosRepository<Activity, Long>
-{
+public interface ActivityRepository extends MongoRepository<Activity, Long> {
     public List<Activity> findAllByBadgesIsNotNull();
 
     public List<Activity> findByAthleteId(int id);

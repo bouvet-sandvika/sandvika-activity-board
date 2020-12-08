@@ -22,7 +22,7 @@ public class CustomOAuth2AccessTokenResponseHttpMessageConverter extends OAuth2A
 
     @Override
     @SuppressWarnings("unchecked")
-    protected OAuth2AccessTokenResponse readInternal(Class<? extends OAuth2AccessTokenResponse> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+    protected OAuth2AccessTokenResponse readInternal(Class<? extends OAuth2AccessTokenResponse> clazz, HttpInputMessage inputMessage) throws HttpMessageNotReadableException {
         try {
             return new CustomTokenResponseConverter().convert((Map<String, Object>) this.jsonMessageConverter.read(PARAMETERIZED_RESPONSE_TYPE.getType(), Map.class, inputMessage));
         } catch (Exception ex) {
