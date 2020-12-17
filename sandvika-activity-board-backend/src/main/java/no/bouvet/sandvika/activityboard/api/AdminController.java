@@ -69,6 +69,7 @@ public class AdminController {
 
     }
 
+    @Async
     @RequestMapping(value = "/athlete/{id}/updateHistoricHandicap", method = RequestMethod.GET)
     public void updateHistoricHandicapForAthlete(@PathVariable("id") int id) {
         handicapCalculator.updateHandicapForAthlete(id);
