@@ -6,7 +6,7 @@ spring:
     mongodb:
       key: rXfthktSnnb5tstjuzHrPDzfkImIK27mQ3RvyXqEmkVFoD159fwqXZxY4zrTJaLMiAtloU06a5n1IlcIvA6ZCA==
       database: sandvika-strava
-      uri: mongodb://sandvika-strava:rXfthktSnnb5tstjuzHrPDzfkImIK27mQ3RvyXqEmkVFoD159fwqXZxY4zrTJaLMiAtloU06a5n1IlcIvA6ZCA==@sandvika-strava.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@sandvika-strava@
+      uri: mongodb://sandvika-strava:rXfthktSnnb5tstjuzHrPDzfkImIK27mQ3RvyXqEmkVFoD159fwqXZxY4zrTJaLMiAtloU06a5n1IlcIvA6ZCA==@sandvika-strava.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@sandvika-strava@
       queryMetricsEnabled: true
       secondaryKey: qzNEaGJyYsal4pPU4iK3QezIdI3RsXtsHZTyi1gSkVamCqrwDq1llmJx2jlCXR2FjppWY0Jh05IaoeO2joxQYQ==
 
