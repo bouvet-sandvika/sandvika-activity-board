@@ -56,6 +56,7 @@ public class AdminController {
         handicapCalculator.updateActivityHandicap(days);
     }
 
+    @Async
     @RequestMapping(value = "/athlete/{id}/activities/load/{pages}", method = RequestMethod.GET)
     @ResponseBody
     public Integer refreshActivitiesForAthlete(@PathVariable("id") int athleteId, @PathVariable("pages") int pages) {
