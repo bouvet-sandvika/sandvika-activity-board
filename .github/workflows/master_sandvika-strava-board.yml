@@ -29,4 +29,4 @@ jobs:
         app-name: 'sandvika-strava-board'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_4290983a52c942498575c8204c862273 }}
-        package: '${{ github.workspace }}/target/*.jar'
+        package: '${{ github.workspace }}/sandvika-activity-board-frontend/target/*.jar'
