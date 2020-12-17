@@ -123,7 +123,9 @@ public class StravaSlurper {
         if (stravaActivity.getStartLatlng() != null) {
             activity.setStartLatLng(new double[]{stravaActivity.getStartLatlng().get(0), stravaActivity.getStartLatlng().get(1)});
             System.out.println("Preparing to set weather");
+            /** Skrur av pga begrensning i API'et
             setWeather(activity, stravaActivity);
+             */
         }
         log.debug("Created activity: " + activity.toString());
         return activity;
