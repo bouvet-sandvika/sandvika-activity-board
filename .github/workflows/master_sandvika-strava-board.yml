@@ -26,7 +26,7 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'sandvika-strava-board'
+        app-name: 'sandvika-stravaboard'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_0493cb88d09e47fdb59d8aa95f3a4600 }}
         package: '${{ github.workspace }}/sandvika-activity-board-frontend/target/*.jar'
