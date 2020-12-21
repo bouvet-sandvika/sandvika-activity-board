@@ -35,9 +35,9 @@ public class StravaAthlete {
     private String username;
     @JsonProperty("resource_state")
     private Integer resourceState;
-    @JsonProperty("firstName")
+    @JsonProperty("firstname")
     private String firstname;
-    @JsonProperty("lastName")
+    @JsonProperty("lastname")
     private String lastname;
     @JsonProperty("city")
     private String city;
@@ -258,6 +258,30 @@ public class StravaAthlete {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return "StravaAthlete{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", resourceState=" + resourceState +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", sex='" + sex + '\'' +
+                ", premium=" + premium +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", badgeTypeId=" + badgeTypeId +
+                ", profileMedium='" + profileMedium + '\'' +
+                ", profile='" + profile + '\'' +
+                ", friend=" + friend +
+                ", follower=" + follower +
+                ", email='" + email + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
 }
 
 

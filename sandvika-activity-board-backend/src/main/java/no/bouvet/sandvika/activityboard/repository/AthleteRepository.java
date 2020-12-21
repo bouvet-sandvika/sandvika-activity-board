@@ -19,4 +19,7 @@ public interface AthleteRepository extends MongoRepository<Athlete, Integer> {
     List<Athlete> findAllByBadgesIsNotNull();
 
     List<Athlete> findAllByTokenIsNotNull();
+    List<Athlete> findAllByUsernameIsNotNull();
+    List<Athlete> findAllByLastNameIsNotNull();
+
 }

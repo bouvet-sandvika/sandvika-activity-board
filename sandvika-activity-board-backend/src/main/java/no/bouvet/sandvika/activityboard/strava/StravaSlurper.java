@@ -57,16 +57,55 @@ public class StravaSlurper {
 
     @Scheduled(fixedRate = 1000 * 60 * 10)
     public void updateLatestActivities() {
-        updateActivities(1, DateUtil.getEpochDaysAgo(5));
+        UpdateSummary updateSummary = updateActivities(1, DateUtil.getEpochDaysAgo(5));
+        logUpdateSummary(updateSummary);
+    }
+
+    private void logUpdateSummary(UpdateSummary updateSummary) {
+        log.debug("** Update Summary: **");
+        for (String athleteName : updateSummary.getNumberOfActivitiesUpdated().keySet()) {
+            log.debug(athleteName + ": " + updateSummary.getNumberOfActivitiesUpdated().get(athleteName));
+        }
     }
 
     @Scheduled(cron = "0 15 0 * * *")
     public void refreshActivities() {
-        updateActivities(1, 0);
+        UpdateSummary updateSummary = updateActivities(1, 0);
+        logUpdateSummary(updateSummary);
+    }
+
+    @Scheduled(fixedRate = 1000 * 60 * 15)
+    public void refreshAthletes() {
+        log.debug("Updating athletes");
+        updateAthletes();
+    }
+
+    public void updateAthletes() {
+        athleteRepository.findAllByTokenIsNotNull()
+                .stream()
+                .filter(a -> a.getLastName() == null)
+                .forEach(i -> updateAthlete(i));
+    }
+
+    private void updateAthlete(Athlete athlete) {
+        if (athlete.getTokenExpires() == null || athlete.getTokenExpires().isBefore(Instant.now())) {
+            refreshToken(athlete);
+        }
+        log.debug("Updating Athlete with strava id " + athlete.getId());
+        String url = BASE_PATH + "/athlete" + "?access_token=" + athlete.getToken();
+        rateLimiter.acquire();
+        log.debug(url);
+        StravaAthlete athleteFromStrava = restTemplateService.getForObject(url, StravaAthlete.class);
+        log.debug(athleteFromStrava.toString());
+        athlete.setUsername(athleteFromStrava.getUsername());
+        athlete.setFirstName(athleteFromStrava.getFirstname());
+        athlete.setLastName(athleteFromStrava.getLastname());
+        athleteRepository.save(athlete);
+        log.debug("Done updating " + athlete.getFirstName() + " " + athlete.getLastName());
     }
 
     public UpdateSummary updateActivities(int pages, long after) {
-        log.info("Updating activities");
+        log.info("Updating activities. pages:" + pages + " days back: " + after);
         UpdateSummary updateSummary = new UpdateSummary();
         for (Athlete athlete : athleteRepository.findAllByTokenIsNotNull()) {
             Integer numberOfActivities = updateActivitiesForAthlete(pages, after, athlete);
@@ -122,7 +161,7 @@ public class StravaSlurper {
         }
         if (stravaActivity.getStartLatlng() != null) {
             activity.setStartLatLng(new double[]{stravaActivity.getStartLatlng().get(0), stravaActivity.getStartLatlng().get(1)});
-            System.out.println("Preparing to set weather");
+            log.debug("Preparing to set weather for activity " + stravaActivity.getId());
             /** Skrur av pga begrensning i API'et
             setWeather(activity, stravaActivity);
              */
@@ -170,7 +209,7 @@ public class StravaSlurper {
         String url = BASE_PATH
                 + "athlete/activities?" + (after == 0 ? "" : "after=" + after + "&") + "page=" + page + "&per_page=200&access_token=" + athlete.getToken();
         rateLimiter.acquire();
-        log.info(url);
+        log.debug(url);
         StravaActivity[] activitiesFromStrava = null;
         try {
             activitiesFromStrava = restTemplateService.getForObject(url, StravaActivity[].class);
