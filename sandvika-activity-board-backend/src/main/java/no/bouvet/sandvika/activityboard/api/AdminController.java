@@ -64,15 +64,13 @@ public class AdminController {
             throw new IllegalArgumentException("Athlete does not exist");
         }
         Athlete athlete = athleteRepository.findById(athleteId);
-
         return stravaSlurper.updateActivitiesForAthlete(pages, 0, athlete);
-
     }
 
     @Async
-    @RequestMapping(value = "/athlete/{id}/updateHistoricHandicap", method = RequestMethod.GET)
-    public void updateHistoricHandicapForAthlete(@PathVariable("id") int id) {
-        handicapCalculator.updateHandicapForAthlete(id);
+    @RequestMapping(value = "/athlete/{id}/updateHistoricHandicap/{days}", method = RequestMethod.GET)
+    public void updateHistoricHandicapForAthlete(@PathVariable("id") int id, @PathVariable("days") int days) {
+        handicapCalculator.updateHandicapForAthlete(id, days);
         List<Activity> activities = activityRepository.findByAthleteId(id);
         for (Activity activity : activities) {
             activity.setHandicap(handicapCalculator.getHandicapForActivity(activity));

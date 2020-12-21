@@ -48,7 +48,6 @@ public class ActivityUtils {
         } else {
             activityList = activityRepository.findByStartDateLocalBetweenAndType(period.getStart(), period.getEnd(), activityType);
         }
-
         Club club = clubRepository.findById(clubName).orElse(null);
 
         return activityList.stream().filter(activity -> club != null && club.getMemberIds().contains(activity.getAthleteId())).collect(Collectors.toList());
