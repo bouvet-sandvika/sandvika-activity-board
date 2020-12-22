@@ -68,15 +68,11 @@ public class AdminController {
     }
 
     @Async
-    @RequestMapping(value = "/athlete/{id}/updateHistoricHandicap/{days}", method = RequestMethod.GET)
-    public void updateHistoricHandicapForAthlete(@PathVariable("id") int id, @PathVariable("days") int days) {
-        handicapCalculator.updateHandicapForAthlete(id, days);
-        List<Activity> activities = activityRepository.findByAthleteId(id);
-        for (Activity activity : activities) {
-            activity.setHandicap(handicapCalculator.getHandicapForActivity(activity));
-            activity.setPoints(PointsCalculator.getPointsForActivity(activity, activity.getHandicap()));
-            activityRepository.save(activity);
-        }
+    @RequestMapping(value = "/athlete/{id}/updateHistoricHandicap", method = RequestMethod.GET)
+    public void updateHistoricHandicapForAthlete(@PathVariable("id") int id) {
+        log.info("Updating HC for " + id);
+        handicapCalculator.updateHandicapForAthlete(id);
+        log.info("Done updating HC for " + id);
     }
 
     @RequestMapping(value = "/athlete", method = RequestMethod.POST)
@@ -107,8 +103,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/badges", method = RequestMethod.POST)
-    public void addBadge(@RequestBody Badge badge) {
-        badgeRepository.save(badge);
+    public void addBadge(@RequestBody List<Badge> badges) {
+        badgeRepository.saveAll(badges);
     }
 
     @RequestMapping(value = "/badges", method = RequestMethod.GET)
@@ -116,11 +112,19 @@ public class AdminController {
         return badgeRepository.findAll();
     }
 
+    @RequestMapping(value = "/badges/appointHistoricalBadges/{athleteId}/{days}", method = RequestMethod.GET)
+    public void appointHistoricalBadgesForAthlete(@PathVariable("athleteId") int athleteId, @PathVariable("days") int days) {
+        List<Activity> activities = activityRepository.findByAthleteIdAndStartDateLocalAfter(athleteId, DateUtil.getDateDaysAgo(days));
+        appointBadgesForActivities(activities);
+    }
+
     @RequestMapping(value = "/badges/appointHistoricalBadges/{days}", method = RequestMethod.GET)
-    public void listAllBadges(@PathVariable("days") int days) {
-        log.info("Appointing badges for the last " + days + " days.");
+    public void appointHistoricalBadgesForAllAthletes(@PathVariable("days") int days) {
         List<Activity> activities = activityRepository.findByStartDateLocalAfter(DateUtil.getDateDaysAgo(days));
-        log.info("Found " + activities.size() + " activities to check for badges.");
+        appointBadgesForActivities(activities);
+    }
+
+    private void appointBadgesForActivities(List<Activity> activities) {
         activities.forEach(activity ->
         {
             activity.setBadges(badgeAppointer.getBadgesForActivity(activity));

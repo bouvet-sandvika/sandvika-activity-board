@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class BadgeAppointer {
@@ -30,7 +30,11 @@ public class BadgeAppointer {
         Set<Badge> awardedBadges = new HashSet<>();
 
         for (Badge badge : allBadges) {
-            if (eligibleForDistanceBadge(activity, badge) || eligibleForClimbBadge(activity, badge) || eligibleForTimeBadge(activity, badge) || eligibleForWeatherBadge(activity, badge)) {
+            if (eligibleForDistanceBadge(activity, badge)
+                    || eligibleForClimbBadge(activity, badge)
+                    || eligibleForTimeBadge(activity, badge)
+                    || eligibleForWeatherBadge(activity, badge)
+                    || eligibleForHashBadge(activity, badge)) {
                 log.info("Appointing badge " + badge.getName() + " to " + activity.getName());
                 appointBadge(activity, awardedBadges, badge);
             }
@@ -41,12 +45,12 @@ public class BadgeAppointer {
     private void appointBadge(Activity activity, Set<Badge> awardedBadges, Badge badge) {
         awardedBadges.add(badge);
         // badge.getActivities().add(activity);
-        log.info("Saving Badge " + badge.toString());
+        log.debug("Saving Badge " + badge.toString());
         badgeRepository.save(badge);
 
         athleteRepository.findById(activity.getAthleteId()).ifPresent(athlete -> {
             athlete.addBadge(badge, activity);
-            log.info("Saving Athlete " + athlete.toString());
+            log.debug("Saving Athlete " + athlete.toString());
             athleteRepository.save(athlete);
         });
     }
@@ -78,6 +82,27 @@ public class BadgeAppointer {
             }
         }
         return false;
+    }
+
+    private boolean eligibleForHashBadge(Activity activity, Badge badge) {
+        if (badgeTypeIsHasTag(badge) && activity.getName().contains("#")) {
+            List<String> tags = extractHashTags(activity.getName());
+            log.debug("Found tags " + tags);
+            for (String tag : tags) {
+                return badge.getHashTag().equalsIgnoreCase(tag);
+            }
+        }
+        return false;
+    }
+
+    private List<String> extractHashTags(String name) {
+        Pattern MY_PATTERN = Pattern.compile("#(\\S+)");
+        Matcher mat = MY_PATTERN.matcher(name);
+        List<String> strs=new ArrayList<>();
+        while (mat.find()) {
+            strs.add(mat.group(1));
+        }
+        return strs;
     }
 
     private boolean isOverMinimumValues(Activity activity, Badge badge) {
@@ -118,5 +143,9 @@ public class BadgeAppointer {
 
     private boolean badgeTypeIsDistance(Badge badge) {
         return badge.getType().equalsIgnoreCase("distance");
+    }
+
+    private boolean badgeTypeIsHasTag(Badge badge) {
+        return badge.getType().equalsIgnoreCase("hashTag");
     }
 }

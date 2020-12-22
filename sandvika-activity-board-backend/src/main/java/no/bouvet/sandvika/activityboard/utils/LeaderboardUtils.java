@@ -87,7 +87,7 @@ public class LeaderboardUtils {
         if (athlete == null) {
             return 1;
         }
-        return athlete.getHandicapForDate(new Date());
+        return athlete.getCurrentHandicap();
     }
 
     public List<LeaderboardEntry> getLeaderboardEntries(String clubName, String activityType, String periodType) {

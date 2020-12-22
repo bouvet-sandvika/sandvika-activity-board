@@ -22,6 +22,7 @@ public class Badge {
     private int minimumMinutes;
     private int minimumMeters;
     private int points;
+    private String hashTag;
 
     @Override
     public String toString() {
@@ -33,7 +34,9 @@ public class Badge {
                 ", valueCriteria=" + valueCriteria +
                 ", timeCriteria='" + timeCriteria + '\'' +
                 ", lessOrMore='" + lessOrMore + '\'' +
+                ", hashTag='" + hashTag + '\'' +
                 ", points=" + points +
                 '}';
     }
+
 }

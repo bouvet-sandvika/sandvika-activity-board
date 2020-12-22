@@ -76,8 +76,6 @@ public class StatsUtils {
         }
         periodStats.setBoardStandingEndPeriod(leaderboardAtEnd);
         periodStats.setBoardStandingStartPeriod(leaderboardAtStart);
-        periodStats.setHcStartPeriod(athlete.getHandicapForDate(period.getStart()));
-        periodStats.setHcEndPeriod(athlete.getHandicapForDate(period.getEnd()));
         return periodStats;
     }
 

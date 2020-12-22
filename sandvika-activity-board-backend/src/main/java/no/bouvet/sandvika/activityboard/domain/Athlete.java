@@ -24,33 +24,9 @@ public class Athlete {
     private String token;
     private Instant tokenExpires;
     private String refreshToken;
-    private List<Handicap> handicapList = new ArrayList<>();
+    private double currentHandicap;
     private List<String> clubs = new ArrayList<>();
     private Map<String, List<Activity>> badges = new HashMap<>();
-
-    public double getHandicapForDate(Date startDateLocal) {
-        if (handicapList == null) {
-            return 1;
-        }
-        OptionalDouble handicap = handicapList.stream()
-                .filter(h -> h.getTimestamp().before(startDateLocal))
-                .sorted(Comparator.comparing(Handicap::getTimestamp).reversed())
-                .mapToDouble(Handicap::getHandicap)
-                .findFirst();
-
-        if (!handicap.isPresent()) {
-            handicap = handicapList.stream()
-                    .sorted(Comparator.comparing(Handicap::getTimestamp))
-                    .mapToDouble(Handicap::getHandicap)
-                    .findFirst();
-        }
-
-        if (!handicap.isPresent()) {
-            return 1;
-        }
-
-        return handicap.getAsDouble();
-    }
 
     public void addBadge(Badge badge, Activity activity) {
         Map<String, List<Activity>> badges = getBadges();
@@ -59,9 +35,5 @@ public class Athlete {
         } else {
             badges.put(badge.getName(), Arrays.asList(activity));
         }
-    }
-
-    public double getCurrentHandicap() {
-        return getHandicapForDate(new Date());
     }
 }

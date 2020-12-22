@@ -1,6 +1,7 @@
 package no.bouvet.sandvika.activityboard.strava;
 
 import com.google.common.util.concurrent.RateLimiter;
+import no.bouvet.sandvika.activityboard.api.AdminController;
 import no.bouvet.sandvika.activityboard.domain.*;
 import no.bouvet.sandvika.activityboard.points.BadgeAppointer;
 import no.bouvet.sandvika.activityboard.points.HandicapCalculator;
@@ -125,6 +126,7 @@ public class StravaSlurper {
                 .stream()
                 .filter(activity -> activity.getPoints() > 0)
                 .collect(Collectors.toList()));
+        handicapCalculator.updateHandicapForAthlete(athlete.getId());
         return activities.size();
     }
 
@@ -162,9 +164,7 @@ public class StravaSlurper {
         if (stravaActivity.getStartLatlng() != null) {
             activity.setStartLatLng(new double[]{stravaActivity.getStartLatlng().get(0), stravaActivity.getStartLatlng().get(1)});
             log.debug("Preparing to set weather for activity " + stravaActivity.getId());
-            /** Skrur av pga begrensning i API'et
             setWeather(activity, stravaActivity);
-             */
         }
         log.debug("Created activity: " + activity.toString());
         return activity;

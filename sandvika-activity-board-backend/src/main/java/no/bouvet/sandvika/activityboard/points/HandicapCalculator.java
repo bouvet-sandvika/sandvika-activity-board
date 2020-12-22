@@ -30,9 +30,11 @@ public class HandicapCalculator {
     @Autowired
     ActivityRepository activityRepository;
 
+    @Autowired
+    AthleteRepository athleteRepository;
+
     private static Logger log = LoggerFactory.getLogger(HandicapCalculator.class);
 
-    private final AthleteRepository athleteRepository;
     private final ActiveHoursUtil activeHoursUtil;
 
     public HandicapCalculator(AthleteRepository athleteRepository, ActiveHoursUtil activeHoursUtil) {
@@ -45,9 +47,30 @@ public class HandicapCalculator {
         updateActivityHandicap(NUM_DAYS_BACK_IN_TIME_TO_UPDATE_HC);
     }
 
+
+//    @Scheduled(cron = "0 45 1 * * *")
+    @Scheduled(fixedRate = 1000 * 60 * 10)
+    private void setCurrentHandicap() {
+        Iterable<Athlete> athletes = athleteRepository.findAllByUsernameIsNotNull();
+        for (Athlete athlete: athletes) {
+            Calendar start = Calendar.getInstance();
+            start.setTime(DateUtil.getDateDaysAgo(30));
+            Calendar end = Calendar.getInstance();
+            List<Activity> activities = activityRepository.findByStartDateLocalBetweenAndAthleteId(start.getTime(), end.getTime(), athlete.getId());
+            athlete.setCurrentHandicap(calculateHandicap(getActiveHoursInPeriod(start, end, activities)));
+            athleteRepository.save(athlete);
+        }
+    }
+
     public void updateActivityHandicap(int days) {
-        updateHistoricalHandicapForAllAthletes(days);
-        Iterable<Activity> activities = activityRepository.findAll();
+        Iterable<Athlete> athletes = athleteRepository.findAllByUsernameIsNotNull();
+        for (Athlete athlete : athletes) {
+            updateHandicapForAthlete(athlete.getId());
+        }
+    }
+
+    public void updateHandicapForAthlete(int athleteId) {
+        Iterable<Activity> activities = activityRepository.findByAthleteId(athleteId);
         for (Activity activity : activities) {
             activity.setHandicap(getHandicapForActivity(activity));
             activity.setPoints(PointsCalculator.getPointsForActivity(activity, activity.getHandicap()));
@@ -55,44 +78,14 @@ public class HandicapCalculator {
         }
     }
 
-
-    public void updateHistoricalHandicapForAllAthletes(int days) {
-        deleteHandicapsForAllAthlets(days);
-        IntStream.range(0, days).forEach(i ->
-                updateHandicapForAllAthletesForDate(DateUtil.getDateDaysAgo(i)));
-    }
-
     public double getHandicapForActivity(Activity activity) {
-        Athlete athlete = athleteRepository.findById(activity.getAthleteId()).orElse(null);
-        if (athlete == null || athlete.getHandicapList().isEmpty()) {
-            return 1;
-        } else {
-            return athlete.getHandicapForDate(activity.getStartDateLocal());
-        }
-    }
-
-    private void deleteHandicapsForAllAthlets(int days) {
-        Iterable<Athlete> athletes = athleteRepository.findAllByLastNameIsNotNull();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -days);
-        for (Athlete athlete : athletes) {
-            athlete.setHandicapList(athlete.getHandicapList()
-                    .stream()
-                    .filter(h -> h.getTimestamp().before(calendar.getTime()))
-                    .collect(Collectors.toList()));
-        }
-        athleteRepository.saveAll(athletes);
-    }
-
-    private void updateHandicapForAllAthletesForDate(Date date) {
-        Iterable<Athlete> athletes = athleteRepository.findAllByLastNameIsNotNull();
-
-        for (Athlete athlete : athletes) {
-            Handicap hc = new Handicap(calculateHandicapForAthleteOnDate(athlete, date), date);
-            athlete.getHandicapList().add(hc);
-        }
-        athleteRepository.saveAll(athletes);
-
+        Calendar start = Calendar.getInstance();
+        start.setTime(activity.getStartDateLocal());
+        start.add(Calendar.DAY_OF_YEAR, -30);
+        Calendar end = Calendar.getInstance();
+        end.setTime(activity.getStartDateLocal());
+        List<Activity> activities = activityRepository.findByStartDateLocalBetweenAndAthleteId(start.getTime(), end.getTime(), activity.getAthleteId());
+        return calculateHandicap(getActiveHoursInPeriod(start, end, activities));
     }
 
     protected double calculateHandicapForAthleteOnDate(Athlete athlete, Date date) {
@@ -116,49 +109,10 @@ public class HandicapCalculator {
         return hc;
     }
 
-    private void updateHandicapForAthleteForDate(int athleteId, Date dateDaysAgo) {
-        Athlete athlete = athleteRepository.findById(athleteId);
-        Handicap hc = new Handicap(calculateHandicapForAthleteOnDate(athlete, dateDaysAgo), dateDaysAgo);
-        athlete.getHandicapList().add(hc);
-        athleteRepository.save(athlete);
-    }
-
-    private void deleteHandicapsForAthlete(int athleteId, int days) {
-        Athlete athlete = athleteRepository.findById(athleteId);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, -days);
-        athlete.setHandicapList(athlete.getHandicapList()
-                .stream()
-                .filter(h -> h.getTimestamp().before(calendar.getTime()))
-                .collect(Collectors.toList()));
-        athleteRepository.save(athlete);
-    }
-
-    public void updateHandicapForAthlete(int athleteId, int days) {
-        deleteHandicapsForAthlete(athleteId, days);
-//        IntStream.range(0, days).forEach(i ->
-//                updateHandicapForAthleteForDate(athleteId, DateUtil.getDateDaysAgo(i)));
-        // Get all activities last days
-        List<Activity> activities = activityRepository.findByStartDateLocalBetweenAndAthleteId(DateUtil.getDateDaysAgo(days), Calendar.getInstance().getTime(), athleteId);
-
-        Calendar start = Calendar.getInstance();
-        start.setTime(DateUtil.getDateDaysAgo(days+30));
-        Calendar end = Calendar.getInstance();
-        end.setTime(DateUtil.getDateDaysAgo(days));
-        Athlete athlete = athleteRepository.findById(athleteId);
-
-        for (int i = days ; i >= 0 ; i--) {
-
-            int activeHours = activities.stream()
-                    .filter(a -> a.getStartDateLocal().before(end.getTime()) && a.getStartDateLocal().after(start.getTime()))
-                    .mapToInt(Activity::getMovingTimeInSeconds)
-                    .sum() / SECONDS_IN_HOUR;
-            Handicap hc = new Handicap(calculateHandicap(activeHours), end.getTime());
-            athlete.getHandicapList().add(hc);
-            log.debug(athlete.getLastName() + "," + end.getTime().toString() + ", " + hc);
-            end.add(Calendar.DATE, 1);
-            start.add(Calendar.DATE, 1);
-        }
-        athleteRepository.save(athlete);
+    private int getActiveHoursInPeriod(Calendar start, Calendar end, List<Activity> activities) {
+        return activities.stream()
+                        .filter(a -> a.getStartDateLocal().before(end.getTime()) && a.getStartDateLocal().after(start.getTime()))
+                        .mapToInt(Activity::getMovingTimeInSeconds)
+                        .sum() / SECONDS_IN_HOUR;
     }
 }
