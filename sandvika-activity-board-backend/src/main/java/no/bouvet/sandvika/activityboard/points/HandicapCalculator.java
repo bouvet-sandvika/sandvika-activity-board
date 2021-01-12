@@ -51,7 +51,7 @@ public class HandicapCalculator {
 //    @Scheduled(cron = "0 45 1 * * *")
     @Scheduled(fixedRate = 1000 * 60 * 10)
     private void setCurrentHandicap() {
-        Iterable<Athlete> athletes = athleteRepository.findAllByUsernameIsNotNull();
+        Iterable<Athlete> athletes = athleteRepository.findAllByTokenIsNotNull();
         for (Athlete athlete: athletes) {
             Calendar start = Calendar.getInstance();
             start.setTime(DateUtil.getDateDaysAgo(30));
