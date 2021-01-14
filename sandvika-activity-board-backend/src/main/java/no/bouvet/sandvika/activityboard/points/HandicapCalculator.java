@@ -79,6 +79,7 @@ public class HandicapCalculator {
     }
 
     public double getHandicapForActivity(Activity activity) {
+        log.debug("** Calculating HC for " + activity.getName() + "**");
         Calendar start = Calendar.getInstance();
         start.setTime(activity.getStartDateLocal());
         start.add(Calendar.DAY_OF_YEAR, -30);
@@ -109,10 +110,10 @@ public class HandicapCalculator {
         return hc;
     }
 
-    private int getActiveHoursInPeriod(Calendar start, Calendar end, List<Activity> activities) {
+    private double getActiveHoursInPeriod(Calendar start, Calendar end, List<Activity> activities) {
         return activities.stream()
                         .filter(a -> a.getStartDateLocal().before(end.getTime()) && a.getStartDateLocal().after(start.getTime()))
-                        .mapToInt(Activity::getMovingTimeInSeconds)
+                        .mapToDouble(Activity::getMovingTimeInSeconds)
                         .sum() / SECONDS_IN_HOUR;
     }
 }
