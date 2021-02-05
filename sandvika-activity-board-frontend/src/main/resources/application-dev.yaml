@@ -2,15 +2,10 @@ server:
   port: 8005
 
 spring:
-  profiles:
-    active: dev
   data:
     mongodb:
-      key: Gd7lNhW6bAStUC1LruVFzvZGyJryJiaL0NpQ7bzxTQXoRorQXfwm8WAwlU3IwYhze4rfZj7h3SbH39nrOEFbfw==
       database: sandvika-strava
-      uri: mongodb://sandvika-strava:Gd7lNhW6bAStUC1LruVFzvZGyJryJiaL0NpQ7bzxTQXoRorQXfwm8WAwlU3IwYhze4rfZj7h3SbH39nrOEFbfw==@sandvika-strava.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@sandvika-strava@
-      queryMetricsEnabled: true
-      secondaryKey: 4iN6Y01QwXRvm6MVYlzjCeedv9KNy2zTuiLwvmvlkAGrE2T5ojLnNPU4AkzwkZ8YycBmiC0p2FLCahdVkMY4Dw==
+      uri: mongodb://localhost:27017
 
 
 #  security:
