@@ -64,5 +64,12 @@ Nå er minst en bruker og en konkurranse lagt til lokalt i databasen. Dette kan 
 sårbart om denne forandringen kommer ut i produksjon.***
 
 
-## Deploy
+## API dokumentasjon
+
+En JSON-fil med OpenAPI-dokumentasjon finnes under https://speedo.bouvet.no/v2/api-docs, eventuelt lokalt under 
+`http://localhost:8005/v2/api-docs`.
+Foreløpig ligger dokumentasjonen i JSON-format, men den blir lett lesbar om man kopierer hele teksten inn i 
+https://editor.swagger.io/ og trykker 'OK' på prompten `Would you like to convert your JSON into YAML?`.
+På denne måten kan man lett se gjennom dokumentasjon til alle endepunktene og formatene til objektene de tar inn og 
+returnerer.
 
