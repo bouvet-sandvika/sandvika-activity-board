@@ -65,7 +65,9 @@
                             <td class="d-md-table-cell">
                                 <ngbd-modal-component [selectedAthlete]="athlete" [activityType]="tab.activityType.code" [periodType]="tab.code" [periodNumber]="tab.pageNumber" [year]="tab.year"></ngbd-modal-component>
                             </td>
-                            <td class="d-md-table-cell">{{athlete.points | number : '1.0-1'}}</td>
+                            <td class="d-md-table-cell"
+                                title="(achievementCount + (distance * km-factor * distanceCoefficientForActivityType + (duration * min-factor * durationCoefficientForActivityType) + (elevation * elevationCoefficientForActivityType)) * handicap">
+                              {{athlete.points | number : '1.0-1'}}</td>
                             <td class="d-none d-md-table-cell">{{athlete.lastActivityDate | date:
                                 'dd/MM/yyyy'}}
                             </td>
