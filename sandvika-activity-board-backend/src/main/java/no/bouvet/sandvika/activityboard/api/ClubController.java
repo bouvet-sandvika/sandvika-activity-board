@@ -2,6 +2,8 @@ package no.bouvet.sandvika.activityboard.api;
 
 import no.bouvet.sandvika.activityboard.domain.Athlete;
 import no.bouvet.sandvika.activityboard.domain.Club;
+import no.bouvet.sandvika.activityboard.domain.HcClimbBoardEntry;
+import no.bouvet.sandvika.activityboard.points.HandicapClimbCalculator;
 import no.bouvet.sandvika.activityboard.repository.AthleteRepository;
 import no.bouvet.sandvika.activityboard.repository.ClubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class ClubController {
 
     @Autowired
     AthleteRepository athleteRepository;
+
+    @Autowired
+    HandicapClimbCalculator handicapClimbCalculator;
 
     @RequestMapping(value = "/club", method = RequestMethod.POST)
     public void createClub(@RequestBody Club club) {
@@ -90,6 +95,11 @@ public class ClubController {
     @RequestMapping(value = "/club/athlete/{athleteId}", method = RequestMethod.GET)
     public List<Club> getAthleteClubs(@PathVariable("athleteId") int athleteId) {
         return clubRepository.findClubsByMemberIdsContains(athleteId);
+    }
+
+    @RequestMapping(value = "/club/{id}/hcclimbboard", method = RequestMethod.GET)
+    public List<HcClimbBoardEntry> getHcClimbBoard(@PathVariable("id") String id) {
+        return handicapClimbCalculator.calculateClimbForAllAthletes(clubRepository.findById(id).get());
     }
 
 }

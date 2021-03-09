@@ -3,9 +3,14 @@ package no.bouvet.sandvika.activityboard.utils;
 import no.bouvet.sandvika.activityboard.domain.*;
 import no.bouvet.sandvika.activityboard.repository.ActivityRepository;
 import no.bouvet.sandvika.activityboard.repository.ClubRepository;
+import no.bouvet.sandvika.activityboard.strava.StravaSlurper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -17,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class ActivityUtils {
-
+    private static Logger log = LoggerFactory.getLogger(ActivityUtils.class);
     @Autowired
     ActivityRepository activityRepository;
 
@@ -44,7 +49,10 @@ public class ActivityUtils {
     public List<Activity> getActivitiesForPeriodByActivityType(String clubName, String activityType, Period period) {
         List<Activity> activityList;
         if (activityType.equalsIgnoreCase("all")) {
+            Instant start = Instant.now();
             activityList = activityRepository.findByStartDateLocalBetween(period.getStart(), period.getEnd());
+            Instant end = Instant.now();
+            log.debug("Getting activities took " + Duration.between(start, end).toMillis());
         } else {
             activityList = activityRepository.findByStartDateLocalBetweenAndType(period.getStart(), period.getEnd(), activityType);
         }
