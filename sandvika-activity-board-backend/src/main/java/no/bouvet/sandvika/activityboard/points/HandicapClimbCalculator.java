@@ -67,7 +67,7 @@ public class HandicapClimbCalculator {
     private HcClimbBoardEntry createClimbEntry(Athlete athlete, double handicapClimb) {
         HcClimbBoardEntry entry = new HcClimbBoardEntry();
         entry.setAthleteFirstName(athlete.getFirstName());
-        entry.setAthleteLastName(athlete.getFirstName());
+        entry.setAthleteLastName(athlete.getLastName());
         entry.setAthleteId(athlete.getId());
         entry.setClimbNumber(handicapClimb);
         return entry;
