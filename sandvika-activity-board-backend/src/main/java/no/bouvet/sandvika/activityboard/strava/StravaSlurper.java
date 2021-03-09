@@ -56,9 +56,9 @@ public class StravaSlurper {
     @Autowired
     BadgeAppointer badgeAppointer;
 
-    //@Scheduled(fixedRate = 1000 * 60 * 10)
+    @Scheduled(fixedRate = 1000 * 60 * 10)
     public void updateLatestActivities() {
-        UpdateSummary updateSummary = updateActivities(1, DateUtil.getEpochDaysAgo(5));
+        UpdateSummary updateSummary = updateActivities(1, DateUtil.getEpochDaysAgo(2));
         logUpdateSummary(updateSummary);
     }
 
@@ -69,13 +69,13 @@ public class StravaSlurper {
         }
     }
 
-    //@Scheduled(cron = "0 15 0 * * *")
+    @Scheduled(cron = "0 15 0 * * *")
     public void refreshActivities() {
         UpdateSummary updateSummary = updateActivities(1, 0);
         logUpdateSummary(updateSummary);
     }
 
-    //@Scheduled(fixedRate = 1000 * 60 * 15)
+    @Scheduled(fixedRate = 1000 * 60 * 60)
     public void refreshAthletes() {
         log.debug("Updating athletes");
         updateAthletes();
