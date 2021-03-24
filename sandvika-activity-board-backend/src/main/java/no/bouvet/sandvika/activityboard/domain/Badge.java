@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -23,6 +24,8 @@ public class Badge {
     private int minimumMeters;
     private int points;
     private String hashTag;
+    private Date startDate;
+    private Date endDate;
 
     @Override
     public String toString() {
@@ -34,8 +37,12 @@ public class Badge {
                 ", valueCriteria=" + valueCriteria +
                 ", timeCriteria='" + timeCriteria + '\'' +
                 ", lessOrMore='" + lessOrMore + '\'' +
-                ", hashTag='" + hashTag + '\'' +
+                ", minimumMinutes=" + minimumMinutes +
+                ", minimumMeters=" + minimumMeters +
                 ", points=" + points +
+                ", hashTag='" + hashTag + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 '}';
     }
 

@@ -26,7 +26,7 @@ public class BadgeAppointer {
     AthleteRepository athleteRepository;
 
     public Set<Badge> getBadgesForActivity(Activity activity) {
-        Set<Badge> allBadges = badgeRepository.findBadgeByActivityTypeIn(Arrays.asList(activity.getType(), "all"));
+        Set<Badge> allBadges = badgeRepository.findBadgeByActivityTypeInAndStartDateBeforeAndEndDateAfter(Arrays.asList(activity.getType(), "all"), activity.getStartDateLocal(), activity.getStartDateLocal());
         Set<Badge> awardedBadges = new HashSet<>();
 
         for (Badge badge : allBadges) {
