@@ -126,7 +126,6 @@ public class StravaSlurper {
                 .stream()
                 .filter(activity -> activity.getPoints() > 0)
                 .collect(Collectors.toList()));
-        handicapCalculator.updateHandicapForAthlete(athlete.getId());
         return activities.size();
     }
 

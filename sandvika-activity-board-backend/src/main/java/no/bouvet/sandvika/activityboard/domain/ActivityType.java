@@ -22,7 +22,10 @@ public enum ActivityType {
     YOGA(Constants.YOGA_NAME),
     E_BIKE_RIDE(Constants.E_BIKE_RIDE_NAME),
     ICE_SKATE(Constants.ICE_SKATE_NAME),
-    WINDSURF(Constants.WINDSURF_NAME);
+    WINDSURF(Constants.WINDSURF_NAME),
+    ALPINE_SKI(Constants.ALPINE_SKI_NAME),
+    SNOWBOARD(Constants.SNOWBOARD_NAME),
+    STAND_UP_PADDLING(Constants.STAND_UP_PADDLING_NAME);
     private String type;
 
     ActivityType(String type) {
@@ -75,6 +78,12 @@ public enum ActivityType {
             return ActivityType.ICE_SKATE;
         } else if (activityName.equalsIgnoreCase(Constants.WINDSURF_NAME)) {
             return ActivityType.WINDSURF;
+        } else if (activityName.equalsIgnoreCase(Constants.ALPINE_SKI_NAME)) {
+            return ActivityType.ALPINE_SKI;
+        } else if (activityName.equalsIgnoreCase(Constants.SNOWBOARD_NAME)) {
+            return ActivityType.SNOWBOARD;
+        } else if (activityName.equalsIgnoreCase(Constants.STAND_UP_PADDLING_NAME)) {
+            return ActivityType.STAND_UP_PADDLING;
         } else {
             return null;
         }
@@ -122,6 +131,12 @@ public enum ActivityType {
                 return Constants.ICE_SKATE_COEFFISIENT_KM;
             case WINDSURF:
                 return Constants.WINDSURF_COEFFISIENT_KM;
+            case ALPINE_SKI:
+                return Constants.ALPINE_SKI_COEFFISIENT_KM;
+            case SNOWBOARD:
+                return Constants.SNOWBOARD_COEFFISIENT_KM;
+            case STAND_UP_PADDLING:
+                return Constants.STAND_UP_PADDLING_COEFFISIENT_KM;
             default:
                 return 1;
         }
@@ -165,6 +180,12 @@ public enum ActivityType {
                 return Constants.ICE_SKATE_COEFFISIENT_MIN;
             case WINDSURF:
                 return Constants.WINDSURF_COEFFISIENT_MIN;
+            case ALPINE_SKI:
+                return Constants.ALPINE_SKI_COEFFISIENT_MIN;
+            case SNOWBOARD:
+                return Constants.SNOWBOARD_COEFFISIENT_MIN;
+            case STAND_UP_PADDLING:
+                return Constants.STAND_UP_PADDLING_COEFFISIENT_MIN;
             default:
                 return 1;
         }
@@ -208,6 +229,12 @@ public enum ActivityType {
                 return Constants.ICE_SKATE_COEFFISIENT_ELE;
             case WINDSURF:
                 return Constants.WINDSURF_COEFFISIENT_ELE;
+            case ALPINE_SKI:
+                return Constants.ALPINE_SKI_COEFFISIENT_ELE;
+            case SNOWBOARD:
+                return Constants.SNOWBOARD_COEFFISIENT_ELE;
+            case STAND_UP_PADDLING:
+                return Constants.STAND_UP_PADDLING_COEFFISIENT_ELE;
             default:
                 return 1;
         }
@@ -232,6 +259,9 @@ public enum ActivityType {
         public static final String E_BIKE_RIDE_NAME = "ebikeride";
         public static final String ICE_SKATE_NAME = "iceskate";
         public static final String WINDSURF_NAME = "windsurf";
+        public static final String ALPINE_SKI_NAME = "alpineski";
+        public static final String SNOWBOARD_NAME = "snowboard";
+        public static final String STAND_UP_PADDLING_NAME = "standuppaddel";
 
         public static final double ROWING_COEFFISIENT_KM = 1;
         public static final double KAYAKING_COEFFISIENT_KM = 1;
@@ -250,7 +280,10 @@ public enum ActivityType {
         public static final double YOGA_COEFFISIENT_KM = 0;
         public static final double E_BIKE_RIDE_COEFFISIENT_KM = 0.1;
         public static final double ICE_SKATE_COEFFISIENT_KM = 0.3;
-        public static final double WINDSURF_COEFFISIENT_KM = 0.3;
+        public static final double WINDSURF_COEFFISIENT_KM = 1;
+        public static final double ALPINE_SKI_COEFFISIENT_KM = 1.5;
+        public static final double SNOWBOARD_COEFFISIENT_KM = 1.5;
+        public static final double STAND_UP_PADDLING_COEFFISIENT_KM = 2.5;
 
         public static final double ROWING_COEFFISIENT_MIN = 1;
         public static final double KAYAKING_COEFFISIENT_MIN = 1;
@@ -270,6 +303,10 @@ public enum ActivityType {
         public static final double E_BIKE_RIDE_COEFFISIENT_MIN = 0.3;
         public static final double ICE_SKATE_COEFFISIENT_MIN = 0.3;
         public static final double WINDSURF_COEFFISIENT_MIN = 0.3;
+        public static final double ALPINE_SKI_COEFFISIENT_MIN = 2.5;
+        public static final double SNOWBOARD_COEFFISIENT_MIN = 2.5;
+        public static final double STAND_UP_PADDLING_COEFFISIENT_MIN = 1;
+
 
         public static final double ROWING_COEFFISIENT_ELE = 1;
         public static final double KAYAKING_COEFFISIENT_ELE = 1;
@@ -289,6 +326,9 @@ public enum ActivityType {
         public static final double E_BIKE_RIDE_COEFFISIENT_ELE = 0.3;
         public static final double ICE_SKATE_COEFFISIENT_ELE = 0.3;
         public static final double WINDSURF_COEFFISIENT_ELE = 0;
+        public static final double ALPINE_SKI_COEFFISIENT_ELE = 0;
+        public static final double SNOWBOARD_COEFFISIENT_ELE = 0;
+        public static final double STAND_UP_PADDLING_COEFFISIENT_ELE = 0;
 
     }
 }
