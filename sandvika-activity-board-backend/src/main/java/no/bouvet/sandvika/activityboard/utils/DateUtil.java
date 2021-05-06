@@ -52,7 +52,7 @@ public class DateUtil {
         Calendar cal = Calendar.getInstance();
         clearCalendar(cal);
         cal.set(year, month, 1);
-        cal.set(Calendar.DAY_OF_MONTH, cal.getMaximum(Calendar.DAY_OF_MONTH));
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
         return cal.getTime();
     }
 
